@@ -5,11 +5,12 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.pms.Dto.ProductRequestDto;
 import com.example.pms.entity.Product;
 import com.example.pms.repository.ProductRepository;
 
 @Service
-public  class ProductServiceImplement implements ProductService {
+public class ProductServiceImplement implements ProductService {
 	
 	ProductRepository proRep;
 
@@ -17,10 +18,14 @@ public  class ProductServiceImplement implements ProductService {
 		super();
 		this.proRep = proRep;
 	}
-	@Override
-	public String addProduct(Product prod) {
-		proRep.save(prod);
-		return "to add a sucessfully";
+	public String addProduct(ProductRequestDto prod) {
+		Product p = new Product();
+		p.setName(prod.getName());
+		p.setDescription(prod.getDescription());
+		p.setPrice(prod.getPrice());
+		p.setPhotoUrl(prod.getPhotoUrl());
+		proRep.save(p);
+		return "product add the sucessfully";
 		
 	}
 	@Override
@@ -33,16 +38,11 @@ public  class ProductServiceImplement implements ProductService {
 		proRep.deleteById(prodId);
 		return "To delete the product";
 	}
-	public String viewProduct(Long prodId) {
-		Optional<Product> product = proRep.findById(prodId);
-		return "To view the product";
-		
+	public Product viewProduct(Long prodId) {
+		return proRep.findById(prodId).get();
 	}
 	public List<Product> viewAllProduct() {
 		return proRep.findAll();
 		
-	}
-	
-
-
 }
+	}

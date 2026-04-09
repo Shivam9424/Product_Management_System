@@ -10,38 +10,36 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.pms.Dto.ProductRequestDto;
 import com.example.pms.entity.Product;
 import com.example.pms.service.ProductService;
 
 @RestController
 public class ProductController {
- 
-	ProductService pService;
-
-	public ProductController(ProductService pService) {
+	ProductService service;
+	public ProductController(ProductService service) {
 		super();
-		this.pService = pService;
+		this.service = service;
 	}
-	
 	@PostMapping("/addProduct")
-	public String addProduct(@RequestBody Product prod ) {
-		return pService.addProduct(prod);
+	public String addProduct(@RequestBody ProductRequestDto prod) {
+		return service.addProduct(prod);
 	}
 	@PatchMapping("/updateProduct")
-	public String updateProduct(@PathVariable Product prod) {
-		return pService.updateProduct(prod);
+	public String updateProduct(@RequestBody Product prod) {
+		return service.updateProduct(prod);
 	}
-	@DeleteMapping("viewProduct/{prodId}")
+	@DeleteMapping("/deleteProduct/{prodId}")
 	public String deleteProduct(@PathVariable Long prodId) {
-		return pService.deleteProduct(prodId);
+		return service.deleteProduct(prodId);
+	}
+	@GetMapping("/viewProduct/{prodId}")
+	public Product viewProduct(@PathVariable Long prodId) {
+		return service.viewProduct(prodId);
 	}
 	@GetMapping("/viewAllProducts")
-	public String viewProduct(@PathVariable Long prodId) {
-		return pService.viewProduct(prodId);
-	}
 	public List<Product> viewAllProducts() {
-		return pService.viewAllProduct();
+		return service.viewAllProduct();
 	}
-
-	// /hello shivam
 }
+
